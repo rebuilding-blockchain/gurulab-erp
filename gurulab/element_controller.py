@@ -167,3 +167,50 @@ class ElementController(DataBaseController):
             # 由于已经找到了模板，这里不更新可能是因为新旧category相同
             print(f"No changes made to the category of template '{template_name}'.")
             return False
+
+    @classmethod
+    def create_element(cls, template_name, properties=None, position=None, component_of=None, create_components=True):
+        # 查找模板ID
+        template_data = cls.db.templates.find_one({"name": template_name})
+        if not template_data:
+            print(f"Template '{template_name}' not found.")
+            return None
+
+        # 创建Element实例
+        element_id = str(uuid.uuid4())
+        new_element = {
+            "element_id": element_id,
+            "template_id": template_data["template_id"],
+            "properties": properties if properties else {},
+            "position": position,
+            "components": [],
+            "component_of": component_of
+        }
+
+        # 将新创建的Element保存到数据库
+        cls.db.elements.insert_one(new_element)
+
+        # 如果需要创建组件Elements
+        if create_components and "component_templates" in template_data:
+            for component_template in template_data["component_templates"]:
+                component_template_data = cls.db.templates.find_one({"name": component_template["element_template_name"]})
+                if component_template_data:
+                    for pos in range(component_template["quantity"]):
+                        component_element_id = cls.create_element(
+                            template_name=component_template["element_template_name"],
+                            properties={},  # 可以根据需要传递适当的属性
+                            position=pos,
+                            component_of=element_id  # 设置父Element的ID
+                        )
+                        if component_element_id:
+                            new_element["components"].append({
+                                "component_template_id": component_template_data["template_id"],
+                                "element_id": component_element_id,
+                                "position": pos
+                            })
+
+            # 更新数据库中的Element以包含组件信息
+            cls.db.elements.update_one({"element_id": element_id}, {"$set": {"components": new_element["components"]}})
+
+        print(f"New element created for template '{template_name}' with ID {element_id}.")
+        return element_id
