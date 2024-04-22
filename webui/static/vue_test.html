@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vue Router beforeRouteEnter Example</title>
+<script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>Vue Router Demo</h1>
+    <router-link to="/">Home</router-link>
+    <router-link to="/details/123">Details</router-link>
+    <router-view></router-view>
+</div>
+
+<script>
+// 1. Define route components
+const Home = { template: '<div>Home page</div>' };
+const Details = {
+    template: '<div>Details page for ID: {{ id }} - Message: {{ message }}</div>',
+    data() {
+        return {
+            id: 0,
+            message: ''
+        };
+    },
+    beforeRouteEnter(to, from, next) {
+        // Simulate fetching data
+        setTimeout(() => {
+            // Fetch some data based on 'to.params.id'
+            const data = { message: 'Data loaded successfully!' };
+            // Pass data to the component instance via `next`
+            next(vm => {
+                console.log("inside_next");
+                vm.id = to.params.id;
+                vm.message = data.message;
+            });
+        }, 1000); // Delay to simulate async request
+    }
+};
+
+// 2. Define some routes
+const routes = [
+    { path: '/', component: Home },
+    { path: '/details/:id', component: Details }
+];
+
+// 3. Create the router instance
+const router = new VueRouter({
+    routes // short for `routes: routes`
+});
+
+// 4. Create and mount the root instance
+new Vue({
+    router
+}).$mount('#app');
+</script>
+</body>
+</html>

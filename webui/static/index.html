@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Welcome to the Ticket System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <strong>Ticket System</strong>
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-end">
+            <a class="navbar-item" href="/login">
+                Login
+            </a>
+
+            <a class="navbar-item" href="/dashboard">
+                Dashboard
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- 脚本用于响应式导航栏 -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 获取所有 "navbar-burger" 元素
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+    // 为每个元素添加点击事件
+    $navbarBurgers.forEach(el => {
+        el.addEventListener('click', () => {
+            // 获取目标元素的ID
+            const target = el.dataset.target;
+            const $target = document.getElementById(target);
+
+            // 切换 "is-active" 类
+            el.classList.toggle('is-active');
+            $target.classList.toggle('is-active');
+        });
+    });
+});
+</script>
+</body>
+</html>

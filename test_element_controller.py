@@ -16,4 +16,6 @@ ec.change_template_category("L9-Hashboard", "dummy")
 ec.change_template_category("L9-Hashboard", "hashboard")
 ec.change_template_category("L9-hashboard", "hashboard")
 
-ec.create_element(template_name="L9-hashboard", create_components=True)
+ec.create_element(template_name="L9-Hashboard", create_components=True)
+
+ec.find_elements_by_template_name(template_name="L9-Hashboard")

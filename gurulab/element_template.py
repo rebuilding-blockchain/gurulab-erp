@@ -2,7 +2,7 @@ from .data_model import DataModel
 from typing import TypedDict, List
 
 
-class Component(TypedDict):
+class TemplateComponent(TypedDict):
     element_template_id: str
     quantity: int
 
@@ -10,7 +10,7 @@ class Component(TypedDict):
 class ElementTemplate(DataModel):
     collection = "element_templates"
 
-    def __init__(self, template_id, name, category="dummy", component_templates: List[Component] = None):
+    def __init__(self, template_id, name, category="dummy", component_templates: List[TemplateComponent] = None):
         """
 
         :param name:

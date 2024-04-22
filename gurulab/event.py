@@ -17,4 +17,6 @@ class Event(DataModel):
             "data": self.data
         }
 
-
+    @classmethod
+    def from_dict(cls, data):
+        return Event(category=data["category"], event_type=data["event_type"], data=data["data"])

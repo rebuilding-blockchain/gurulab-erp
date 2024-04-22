@@ -4,7 +4,7 @@ from typing import List, Dict, Any, TypedDict
 
 
 class ElementComponent(TypedDict):
-    component_template_name: str
+    element_template_id: str
     quantity: int
     component_elements: List[str]
 
@@ -14,21 +14,21 @@ class Element(DataModel):
 
     def __init__(
             self, element_id: str, template_id: str, properties: Dict[str, Any] = None, 
-            position: int = None, components: Dict[str, ElementComponent] = None, component_of: str = None):
+            position: int = None, components: List[ElementComponent] = None, component_of: str = None):
         """
         初始化一个Element实例。
         :param element_id: Element的唯一标识符。
         :param template_id: 与此Element相关联的ElementTemplate的唯一标识符。
         :param properties: 包含Element的特定属性和值的字典。
         :param position: Element作为组件时的位置信息。
-        :param components: 与此Element相关的组件实例字典。
+        :param components: 与此Element相关的组件实例字典构成的List。
         :param component_of: 此Element作为组件属于的父Element的element_id。
         """
         self.element_id = element_id
         self.template_id = template_id
         self.properties = properties if properties is not None else {}
         self.position = position
-        self.components = components if components is not None else {}
+        self.components = components if components is not None else []
         self.component_of = component_of
 
     def to_dict(self):
